@@ -1,0 +1,62 @@
+/*
+ *  Задание #7
+ *  Автор: Максютка
+ *
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "map.h"
+
+void undecorate_name(char * name);
+
+int main(int argc, char * argv[])
+{
+    COUNTRY ** map;
+	char cmd[20];
+	char name[50];
+	int population;
+	int area;
+
+    /* Загрузка списка */
+    map = map_load();
+
+	while(strcmp(cmd, "quit")) {
+		printf("print command:\n");
+		scanf("%s", cmd);
+		if (strcmp(cmd, "add")==0) {
+    			scanf("%s", name);
+    			scanf("%d", &population);
+    			scanf("%d", &area);
+
+			undecorate_name(name);
+			add(map, name, population, area);
+		} 
+		else if (strcmp(cmd, "delete")==0) {
+			scanf("%s", name);
+			map_delete(map, name);
+		}
+		else if (strcmp(cmd, "dump")==0) {
+			map_dump(map);
+		}
+		else if (strcmp(cmd, "save")==0) {
+			map_save(map);
+		}
+	}
+
+    /* Удаление списка из динамической памяти */
+    map_clear(map);
+
+    return 0;
+}
+
+void undecorate_name(char * name)
+{
+    int cnt;
+    while (name[cnt]) {
+        if (name[cnt] == '_')
+            name[cnt] = ' ';
+        cnt++;
+    }
+}
